@@ -406,8 +406,9 @@ export default function TypingEngine({ initialText, title, mode, timeLimitSecs, 
           onChange={handleKeyPress}
           className="absolute inset-0 opacity-0 cursor-default select-none resize-none overflow-hidden"
           autoFocus
-          spellCheck="false"
+          spellCheck={false}
           autoComplete="off"
+          autoCorrect="off"
           autoCapitalize="off"
           disabled={isCompleted}
         />

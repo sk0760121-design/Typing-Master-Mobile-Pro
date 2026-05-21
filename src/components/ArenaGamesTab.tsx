@@ -356,7 +356,8 @@ export default function ArenaGamesTab({ profile, onUpdateCoinsAndXp }: ArenaGame
                 className="w-full text-center py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-850 text-base font-mono tracking-widest focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 uppercase font-bold"
                 disabled={gameState !== 'playing'}
                 autoComplete="off"
-                spellCheck="false"
+                autoCorrect="off"
+                spellCheck={false}
                 autoCapitalize="off"
               />
               <div className="absolute right-3.5 top-1/2 transform -translate-y-1/2 bg-indigo-50 text-indigo-650 text-[8px] font-bold font-mono px-2 py-0.5 rounded border border-indigo-100 uppercase tracking-wide">
