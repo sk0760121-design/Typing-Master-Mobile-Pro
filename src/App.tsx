@@ -6,11 +6,12 @@ import ArenaGamesTab from './components/ArenaGamesTab';
 import AnalyticsTab from './components/AnalyticsTab';
 import CustomAiDrills from './components/CustomAiDrills';
 import LeaderboardTab from './components/LeaderboardTab';
-import SettingsTab from './components/SettingsTab';
+import SettingsTab, { ACCENT_THEMES } from './components/SettingsTab';
 import ProfileTab from './components/ProfileTab';
 import TypingEngine from './components/TypingEngine';
 
 // Helpers & Data
+import { LOCALIZATION } from './utils/lang';
 import { UserProfile, TypingLesson, TypingRecord, GameScore } from './types';
 import { loadProfileLocal, processStatsUpdate, INITIAL_PROFILE, getRankColor } from './utils/userHelpers';
 import { TEST_PASSAGES, TestPassage } from './utils/testPassages';
@@ -48,8 +49,114 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<string>('dashboard');
   const [activeSubState, setActiveSubState] = useState<'menu' | 'typing_run' | 'result_screen'>('menu');
   const [profile, setProfile] = useState<UserProfile>(INITIAL_PROFILE);
-  const [soundEnabled, setSoundEnabled] = useState(true);
-  const [activeTheme, setActiveTheme] = useState('hyper_cyan');
+
+  // Comprehensive Settings Hooks loaded securely or with defaults
+  const [soundEnabled, setSoundEnabled] = useState(() => {
+    const saved = localStorage.getItem('typemaster_sound_enabled');
+    return saved !== null ? saved === 'true' : true;
+  });
+  const [soundVolume, setSoundVolume] = useState(() => {
+    const saved = localStorage.getItem('typemaster_sound_volume');
+    return saved !== null ? parseInt(saved, 10) : 50;
+  });
+  const [soundPreset, setSoundPreset] = useState<'cyber' | 'retro' | 'classic'>(() => {
+    const saved = localStorage.getItem('typemaster_sound_preset');
+    return (saved as any) || 'cyber';
+  });
+  const [darkMode, setDarkMode] = useState(() => {
+    const saved = localStorage.getItem('typemaster_dark_mode');
+    return saved !== null ? saved === 'true' : true; // Dark mode default as requested
+  });
+  const [accentColor, setAccentColor] = useState<'indigo' | 'emerald' | 'amber' | 'rose' | 'purple' | 'cyan'>(() => {
+    const saved = localStorage.getItem('typemaster_accent_color');
+    return (saved as any) || 'indigo';
+  });
+  const [fontSize, setFontSize] = useState<'sm' | 'md' | 'lg' | 'xl'>(() => {
+    const saved = localStorage.getItem('typemaster_font_size');
+    return (saved as any) || 'md';
+  });
+  const [language, setLanguage] = useState<'en' | 'es' | 'fr' | 'de' | 'ja'>(() => {
+    const saved = localStorage.getItem('typemaster_language');
+    return (saved as any) || 'en';
+  });
+  const [remindersEnabled, setRemindersEnabled] = useState(() => {
+    const saved = localStorage.getItem('typemaster_reminders_enabled');
+    return saved !== null ? saved === 'true' : true;
+  });
+  const [reminderTime, setReminderTime] = useState(() => {
+    const saved = localStorage.getItem('typemaster_reminder_time');
+    return saved !== null ? saved : "18:00";
+  });
+
+  const [bgmEnabled, setBgmEnabled] = useState(() => {
+    const saved = localStorage.getItem('typemaster_bgm_enabled');
+    return saved !== null ? saved === 'true' : true;
+  });
+
+  // Watchers to serialize settings state changes safely
+  useEffect(() => {
+    localStorage.setItem('typemaster_sound_enabled', String(soundEnabled));
+    synth.toggle(soundEnabled);
+  }, [soundEnabled]);
+
+  useEffect(() => {
+    localStorage.setItem('typemaster_sound_volume', String(soundVolume));
+    synth.setVolume(soundVolume);
+  }, [soundVolume]);
+
+  useEffect(() => {
+    localStorage.setItem('typemaster_sound_preset', soundPreset);
+    synth.setSoundType(soundPreset);
+  }, [soundPreset]);
+
+  useEffect(() => {
+    localStorage.setItem('typemaster_dark_mode', String(darkMode));
+  }, [darkMode]);
+
+  useEffect(() => {
+    localStorage.setItem('typemaster_accent_color', accentColor);
+  }, [accentColor]);
+
+  useEffect(() => {
+    localStorage.setItem('typemaster_font_size', fontSize);
+  }, [fontSize]);
+
+  useEffect(() => {
+    localStorage.setItem('typemaster_language', language);
+  }, [language]);
+
+  useEffect(() => {
+    localStorage.setItem('typemaster_reminders_enabled', String(remindersEnabled));
+  }, [remindersEnabled]);
+
+  useEffect(() => {
+    localStorage.setItem('typemaster_reminder_time', reminderTime);
+  }, [reminderTime]);
+
+  useEffect(() => {
+    localStorage.setItem('typemaster_bgm_enabled', String(bgmEnabled));
+    synth.setBgmPlaying(bgmEnabled);
+  }, [bgmEnabled]);
+
+  useEffect(() => {
+    const handleGestureAndPlay = () => {
+      if (bgmEnabled) {
+        synth.setBgmPlaying(true);
+      }
+      window.removeEventListener('click', handleGestureAndPlay);
+      window.removeEventListener('keydown', handleGestureAndPlay);
+    };
+    window.addEventListener('click', handleGestureAndPlay);
+    window.addEventListener('keydown', handleGestureAndPlay);
+    return () => {
+      window.removeEventListener('click', handleGestureAndPlay);
+      window.removeEventListener('keydown', handleGestureAndPlay);
+    };
+  }, [bgmEnabled]);
+
+  // Dynamic Localization Dictionary and Accent Theme settings mappings
+  const dict = LOCALIZATION[language] || LOCALIZATION['en'];
+  const theme = ACCENT_THEMES[accentColor] || ACCENT_THEMES['indigo'];
 
   // Active Typing Session configuration
   const [activeSession, setActiveSession] = useState<{
@@ -539,13 +646,17 @@ export default function App() {
         <div className="flex-1 flex flex-col justify-between min-h-[580px]">
           
           {/* Top Pilot Profile Header */}
-          <div className="flex justify-between items-center bg-white p-3.5 rounded-2xl border border-slate-100 shadow-[0_4px_12px_rgba(0,0,0,0.02)] relative overflow-hidden mb-4 animate-fade-in">
+          <div id="pilot-profile-header-container" className={`flex justify-between items-center p-3.5 rounded-2xl border relative overflow-hidden mb-4 animate-fade-in transition-all ${
+            darkMode ? 'bg-slate-900/90 border-slate-850/80 shadow-md' : 'bg-white border-slate-100 shadow-[0_4px_12px_rgba(0,0,0,0.02)]'
+          }`}>
             <div className="flex items-center gap-2.5">
               <span className="text-2xl drop-shadow-sm">{profile.avatarUrl}</span>
               <div>
-                <h2 className="text-xs font-bold text-slate-800 leading-none">{profile.username}</h2>
+                <h2 className={`text-xs font-bold leading-none ${darkMode ? 'text-white' : 'text-slate-800'}`}>{profile.username}</h2>
                 <div className="flex items-center gap-1 mt-1">
-                  <span className="text-[8px] font-mono text-indigo-600 bg-indigo-50 border border-indigo-100/80 px-1.5 py-0.5 rounded font-bold uppercase">LVL {profile.level}</span>
+                  <span className={`text-[8px] font-mono px-1.5 py-0.5 rounded font-bold uppercase ${
+                    darkMode ? 'text-indigo-400 bg-indigo-950/60 border border-indigo-900/70' : 'text-indigo-600 bg-indigo-50 border border-indigo-100/80'
+                  }`}>LVL {profile.level}</span>
                   <span className="text-[9px] text-slate-400 font-semibold">• {profile.rank}</span>
                 </div>
               </div>
@@ -553,10 +664,14 @@ export default function App() {
 
             {/* Micro coins and streaks stats trigger */}
             <div className="flex gap-2 text-right items-center">
-              <div className="flex items-center gap-0.5 text-xs text-orange-500 font-bold font-mono bg-orange-50/70 px-2 py-0.5 rounded-lg border border-orange-100">
+              <div className={`flex items-center gap-0.5 text-xs font-bold font-mono px-2 py-0.5 rounded-lg border ${
+                darkMode ? 'text-orange-400 bg-orange-950/40 border-orange-900/60' : 'text-orange-500 bg-orange-50/70 border-orange-100'
+              }`}>
                 <Flame className="w-3.5 h-3.5 animate-pulse text-orange-500" /> {profile.streak}d
               </div>
-              <div className="flex items-center gap-0.5 text-xs text-amber-500 font-bold font-mono bg-amber-50/70 px-2 py-0.5 rounded-lg border border-amber-100">
+              <div className={`flex items-center gap-0.5 text-xs font-bold font-mono px-2 py-0.5 rounded-lg border ${
+                darkMode ? 'text-amber-400 bg-amber-950/40 border-amber-900/60' : 'text-amber-500 bg-amber-50/70 border-amber-100'
+              }`}>
                 <span className="text-[10px]">$</span>{profile.coins}
               </div>
             </div>
@@ -843,28 +958,51 @@ export default function App() {
                 onChangeName={handleNameChange}
                 soundEnabled={soundEnabled}
                 onToggleSound={setSoundEnabled}
-                activeTheme={activeTheme}
-                onChangeTheme={setActiveTheme}
+                soundVolume={soundVolume}
+                onChangeVolume={setSoundVolume}
+                soundPreset={soundPreset}
+                onChangeSoundPreset={setSoundPreset}
+                darkMode={darkMode}
+                onToggleDarkMode={setDarkMode}
+                accentColor={accentColor}
+                onChangeAccentColor={setAccentColor}
+                fontSize={fontSize}
+                onChangeFontSize={setFontSize}
+                language={language}
+                onChangeLanguage={setLanguage}
+                remindersEnabled={remindersEnabled}
+                onToggleReminders={setRemindersEnabled}
+                reminderTime={reminderTime}
+                onChangeReminderTime={setReminderTime}
+                bgmEnabled={bgmEnabled}
+                onToggleBgm={setBgmEnabled}
               />
             )}
           </div>
 
           {/* Glowing Glass Bottom Virtual smartphone navigation bar */}
-          <div className="z-35 border-t border-slate-100 pt-2.5 flex justify-between items-center px-1">
+          <div className={`z-35 border-t pt-2.5 flex justify-between items-center px-1 ${
+            darkMode ? 'border-slate-850 bg-slate-950' : 'border-slate-100 bg-white'
+          }`}>
             {[
-              { id: 'dashboard', icon: <Home className="w-4 h-4" />, label: "Grid" },
-              { id: 'lessons', icon: <BookOpen className="w-4 h-4" />, label: "Lessons" },
-              { id: 'testing', icon: <Clock className="w-4 h-4" />, label: "Test" },
-              { id: 'games', icon: <Gamepad2 className="w-4 h-4" />, label: "Arcade" },
-              { id: 'settings', icon: <Settings className="w-4 h-4" />, label: "Setup" }
+              { id: 'dashboard', icon: <Home className="w-4 h-4" />, label: dict.dashboard },
+              { id: 'lessons', icon: <BookOpen className="w-4 h-4" />, label: dict.lessons },
+              { id: 'testing', icon: <Clock className="w-4 h-4" />, label: dict.speed_test },
+              { id: 'games', icon: <Gamepad2 className="w-4 h-4" />, label: dict.games },
+              { id: 'settings', icon: <Settings className="w-4 h-4" />, label: dict.settings }
             ].map((btn) => (
               <button
                 key={btn.id}
-                onClick={() => setActiveTab(btn.id)}
+                onClick={() => {
+                  setActiveTab(btn.id);
+                  synth.playKeyPress(true);
+                }}
                 className={`flex flex-col items-center gap-0.5 cursor-pointer transition-all px-2 py-1.5 rounded-xl ${
                   activeTab === btn.id 
-                    ? 'text-indigo-600 bg-indigo-50/80 font-bold' 
-                    : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
+                    ? `${theme.text} ${theme.fill} font-bold` 
+                    : darkMode 
+                      ? 'text-slate-500 hover:text-slate-350 hover:bg-slate-900/40' 
+                      : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50/60'
                 }`}
               >
                 {btn.icon}
@@ -874,16 +1012,21 @@ export default function App() {
 
             {/* Quick access secondary side menu blocks inside sub-navigation viewports */}
             {[
-              { id: 'analytics', icon: <Activity className="w-4 h-4" />, label: "Logs" },
-              { id: 'leaderboard', icon: <Trophy className="w-4 h-4" />, label: "Ranks" }
+              { id: 'analytics', icon: <Activity className="w-4 h-4" />, label: dict.logs },
+              { id: 'leaderboard', icon: <Trophy className="w-4 h-4" />, label: dict.leaderboard }
             ].map((btn) => (
               <button
                 key={btn.id}
-                onClick={() => setActiveTab(btn.id)}
+                onClick={() => {
+                  setActiveTab(btn.id);
+                  synth.playKeyPress(true);
+                }}
                 className={`flex flex-col items-center gap-0.5 cursor-pointer transition-all px-2 py-1.5 rounded-xl ${
                   activeTab === btn.id 
-                    ? 'text-indigo-600 bg-indigo-50/80 font-bold' 
-                    : 'text-slate-405 hover:text-slate-600 hover:bg-slate-50'
+                    ? `${theme.text} ${theme.fill} font-bold` 
+                    : darkMode 
+                      ? 'text-slate-500 hover:text-slate-350 hover:bg-slate-900/40' 
+                      : 'text-slate-405 hover:text-slate-600 hover:bg-slate-50/60'
                 }`}
               >
                 {btn.icon}

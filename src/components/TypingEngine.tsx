@@ -50,7 +50,28 @@ export default function TypingEngine({ initialText, title, mode, timeLimitSecs, 
   const [elapsedSecs, setElapsedSecs] = useState(0);
   const [timeLeft, setTimeLeft] = useState(timeLimitSecs || 0);
   const [isCompleted, setIsCompleted] = useState(false);
-  const [soundEnabled, setSoundEnabled] = useState(true);
+
+  // Load physical preferences from local setting vectors
+  const soundPref = localStorage.getItem('typemaster_sound_enabled');
+  const [soundEnabled, setSoundEnabled] = useState(soundPref !== null ? soundPref === 'true' : true);
+  const fontSizePref = localStorage.getItem('typemaster_font_size') || 'md';
+  const accentColorPref = localStorage.getItem('typemaster_accent_color') || 'indigo';
+
+  const fontSizeClass = 
+    fontSizePref === 'sm' ? 'text-xs md:text-sm' :
+    fontSizePref === 'md' ? 'text-sm md:text-base' :
+    fontSizePref === 'lg' ? 'text-base md:text-lg' :
+    'text-lg md:text-xl font-medium';
+
+  const caretColors: Record<string, string> = {
+    indigo: 'text-indigo-600 bg-indigo-50 border-indigo-600',
+    emerald: 'text-emerald-600 bg-emerald-50 border-emerald-600',
+    amber: 'text-amber-800 bg-amber-50 border-amber-600',
+    rose: 'text-rose-600 bg-rose-50 border-rose-600',
+    purple: 'text-purple-600 bg-purple-50 border-purple-600',
+    cyan: 'text-cyan-600 bg-cyan-50 border-cyan-600'
+  };
+  const caretColorClass = caretColors[accentColorPref] || caretColors['indigo'];
 
   // Statistics counters
   const [totalKeypresses, setTotalKeypresses] = useState(0);
@@ -350,12 +371,12 @@ export default function TypingEngine({ initialText, title, mode, timeLimitSecs, 
       <div 
         id="typing-text-stage"
         onClick={() => inputAreaRef.current?.focus()}
-        className="relative min-h-36 border border-indigo-100 bg-white p-4.5 rounded-2xl shadow-[0_8px_30px_rgba(79,70,229,0.03)] cursor-text overflow-hidden"
+        className="relative min-h-36 border border-indigo-150/40 bg-white p-4.5 rounded-2xl shadow-[0_8px_30px_rgba(79,70,229,0.03)] cursor-text overflow-hidden"
       >
         <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
         {/* Dynamic scroll simulator */}
-        <div className="text-sm md:text-base font-mono leading-relaxed tracking-wider select-none text-slate-350 whitespace-pre-wrap transition-all block">
+        <div className={`${fontSizeClass} font-mono leading-relaxed tracking-wider select-none text-slate-350 whitespace-pre-wrap transition-all block`}>
           {targetChars.map((char, index) => {
             let className = "transition-all duration-75 inline";
             const isCaret = index === currentIndex;
@@ -363,9 +384,9 @@ export default function TypingEngine({ initialText, title, mode, timeLimitSecs, 
             if (index < currentIndex) {
               className += typedHistory[index] 
                 ? " text-emerald-600 font-bold" 
-                : " text-red-500 font-extrabold bg-red-50 rounded px-0.5";
+                : " text-red-500 font-extrabold bg-red-55/60 rounded px-0.5";
             } else if (isCaret) {
-              className += " text-indigo-650 font-bold bg-indigo-50 border-b-2 border-indigo-600 animate-pulse px-0.5 rounded-sm";
+              className += ` ${caretColorClass} font-bold border-b-2 animate-pulse px-0.5 rounded-sm`;
             } else {
               className += " text-slate-450 opacity-80";
             }
