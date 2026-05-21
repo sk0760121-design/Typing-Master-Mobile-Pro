@@ -1,0 +1,6 @@
+{
+  "name": "Typing Master Mobile Pro",
+  "description": "A premium bright, modern, and highly gamified typing training ecosystem. Engage in structured typing courses, space arcade defense games, precise diagnostic heatmaps, and customizable speed tests on a high-end mobile experience.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
