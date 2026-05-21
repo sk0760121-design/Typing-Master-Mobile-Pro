@@ -211,7 +211,7 @@ export default function SettingsTab({
             </p>
           </div>
 
-          <form onSubmit={handleSaveName} className="flex gap-2">
+          <form onSubmit={handleSaveName} className="flex flex-col gap-2 w-full">
             <input
               type="text"
               value={nameInput}
@@ -220,7 +220,7 @@ export default function SettingsTab({
                 synth.playKeyPress(true);
               }}
               maxLength={18}
-              className={`flex-1 rounded-xl px-3 py-2.5 text-xs font-medium focus:outline-none focus:ring-1 transition-all ${
+              className={`w-full rounded-xl px-3 py-2.5 text-xs font-medium focus:outline-none focus:ring-1 transition-all ${
                 darkMode 
                   ? 'bg-slate-950 border border-slate-800 text-white focus:border-indigo-500 focus:ring-indigo-505' 
                   : 'bg-slate-50 border border-slate-200 text-slate-700 focus:border-indigo-500 focus:ring-indigo-500'
@@ -228,7 +228,7 @@ export default function SettingsTab({
             />
             <button
               type="submit"
-              className={`cursor-pointer px-4.5 py-2.5 text-white font-bold rounded-xl text-xs hover:scale-103 transition-transform shadow-md ${theme.bg}`}
+              className={`cursor-pointer w-full py-2.5 text-white font-bold rounded-xl text-xs hover:scale-103 transition-transform shadow-md ${theme.bg}`}
             >
               {dict.update_username}
             </button>

@@ -65,7 +65,7 @@ export default function App() {
   });
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem('typemaster_dark_mode');
-    return saved !== null ? saved === 'true' : true; // Dark mode default as requested
+    return saved !== null ? saved === 'true' : false; // Bright mode default as requested
   });
   const [accentColor, setAccentColor] = useState<'indigo' | 'emerald' | 'amber' | 'rose' | 'purple' | 'cyan'>(() => {
     const saved = localStorage.getItem('typemaster_accent_color');
