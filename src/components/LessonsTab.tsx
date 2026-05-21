@@ -123,7 +123,7 @@ export default function LessonsTab({ profile, onSelectLesson }: LessonsTabProps)
       </div>
 
       {/* Lesson List Panels */}
-      <div className="space-y-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {filteredLessons.map((lesson, idx) => {
           const starsEarned = getLessonStars(lesson);
           const tierBorderColors = {

@@ -69,7 +69,7 @@ export default function CustomAiDrills({ profile, onLaunchPractice }: CustomAiDr
       </div>
 
       {/* Grid: Selected Weak Keys Monitor & AI Settings */}
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         
         {/* Identified Weak Keys Monitor */}
         <div className="p-4 border border-slate-150 bg-white rounded-2xl shadow-sm flex flex-col justify-between space-y-3">

@@ -43,7 +43,7 @@ export default function MobileFrame({ children }: MobileFrameProps) {
       const ua = navigator.userAgent || navigator.vendor || (window as any).opera;
       const isMobileOS = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(ua);
       const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-      const isNarrow = window.innerWidth <= 1024;
+      const isNarrow = window.innerWidth <= 1200;
 
       if (isMobileOS || isNarrow) {
         setDeviceMode('native');
@@ -302,7 +302,7 @@ export default function MobileFrame({ children }: MobileFrameProps) {
       <div 
         className={`relative z-10 w-full transition-all duration-300 shadow-[0_25px_60px_rgba(79,70,229,0.12)] bg-slate-900 border-[#cbd5e1] rounded-[48px] overflow-hidden flex flex-col justify-between ${
           isTablet
-            ? 'max-w-[760px] min-h-[940px] aspect-[3/4] border-[10px] border-slate-850 p-4' // Tablet landscape/portrait hybrid
+            ? 'max-w-[960px] min-h-[940px] aspect-[4/3] border-[10px] border-slate-850 p-4' // Tablet landscape/portrait hybrid optimized
             : 'max-w-[415px] min-h-[730px] aspect-[9/19] border-[8px] border-slate-750 p-3.5'   // Standard mobile template
         }`}
       >

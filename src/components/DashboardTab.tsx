@@ -156,22 +156,22 @@ export default function DashboardTab({ profile, onSetTab, onStartContinueLesson 
   const dailyPercentage = Math.round((wordsTypedToday / dailyGoal) * 100);
 
   return (
-    <div className="space-y-4.5 animate-fade-in px-1">
+    <div className="space-y-4.5 animate-fade-in px-1 text-slate-800">
       {/* Continuing & Streak Hero Block with a soft, gorgeous white-cream layout and sky gradients */}
       <div 
         id="hero-dashboard-banner"
-        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-50/50 via-white to-sky-50 p-5.5 border border-indigo-100/70 shadow-[0_8px_30px_rgba(79,70,229,0.04)]"
+        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-50/50 via-white to-sky-50 p-5.5 sm:p-7.5 border border-indigo-100/70 shadow-[0_8px_30px_rgba(79,70,229,0.04)]"
       >
         <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none"></div>
         <div className="absolute -bottom-8 -left-8 w-24 h-24 bg-sky-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
-        <div className="flex flex-col gap-4 z-10 relative">
-          <div>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5 z-10 relative">
+          <div className="flex-1">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-[10px] text-indigo-600 font-bold uppercase tracking-wider mb-2.5">
               <Sparkles className="w-3.5 h-3.5 text-indigo-500 animate-spin" style={{ animationDuration: '5s' }} />
               LEVEL {profile.level} PILOT
             </div>
-            <h1 id="dashboard-greetings" className="text-xl font-bold text-slate-800 tracking-tight leading-tight">
+            <h1 id="dashboard-greetings" className="text-xl sm:text-2xl font-bold text-slate-800 tracking-tight leading-tight">
               Keep pushing, {profile.username}!
             </h1>
             <p className="text-xs text-slate-500 mt-1 max-w-sm leading-relaxed">
@@ -179,9 +179,9 @@ export default function DashboardTab({ profile, onSetTab, onStartContinueLesson 
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 shrink-0">
             {/* Streak card */}
-            <div className="flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-white border border-slate-100 shadow-sm flex-1 sm:flex-initial">
+            <div className="flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-white border border-slate-100/80 shadow-sm flex-1 md:flex-initial min-w-[130px]">
               <div className="p-2 rounded-xl bg-orange-50 text-orange-500 border border-orange-100/50">
                 <Flame className="w-5 h-5 fill-orange-500/10 animate-pulse" />
               </div>
@@ -192,7 +192,7 @@ export default function DashboardTab({ profile, onSetTab, onStartContinueLesson 
             </div>
 
             {/* Coins card */}
-            <div className="flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-white border border-slate-100 shadow-sm flex-1 sm:flex-initial">
+            <div className="flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-white border border-slate-100/80 shadow-sm flex-1 md:flex-initial min-w-[130px]">
               <div className="p-2 rounded-xl bg-amber-50 text-amber-500 border border-amber-100/50 flex items-center justify-center">
                 <div className="w-5 h-5 flex items-center justify-center font-bold text-xs bg-amber-500/10 rounded-full border border-amber-400/30">
                   $
@@ -243,37 +243,37 @@ export default function DashboardTab({ profile, onSetTab, onStartContinueLesson 
       </div>
 
       {/* Numerical Stats Trio Grid with sleek bright cards */}
-      <div className="grid grid-cols-3 gap-2.5">
-        <div id="stat-speed-card" className="border border-slate-100 bg-white p-3 rounded-2xl relative overflow-hidden shadow-sm group">
+      <div className="grid grid-cols-3 gap-3 md:gap-4">
+        <div id="stat-speed-card" className="border border-slate-100 bg-white p-3.5 rounded-2xl relative overflow-hidden shadow-sm group">
           <div className="absolute top-0 left-0 w-1 h-3 bg-indigo-500 group-hover:h-full transition-all"></div>
           <div className="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-0.5">Best Speed</div>
-          <div className="text-lg font-bold text-slate-800 leading-none">{profile.bestWpm} <span className="text-[10px] font-normal text-slate-400 font-sans">WPM</span></div>
-          <div className="text-[9px] text-slate-500 font-medium mt-1 flex items-center gap-0.5">
+          <div className="text-xl font-bold text-slate-800 leading-none">{profile.bestWpm} <span className="text-xs font-normal text-slate-400 font-sans">WPM</span></div>
+          <div className="text-[9px] text-slate-500 font-medium mt-1.5 flex items-center gap-0.5">
             <Zap className="w-2.5 h-2.5 text-indigo-500" /> Avg: {avgWpm}
           </div>
         </div>
 
-        <div id="stat-accuracy-card" className="border border-slate-100 bg-white p-3 rounded-2xl relative overflow-hidden shadow-sm group">
+        <div id="stat-accuracy-card" className="border border-slate-100 bg-white p-3.5 rounded-2xl relative overflow-hidden shadow-sm group">
           <div className="absolute top-0 left-0 w-1 h-3 bg-emerald-500 group-hover:h-full transition-all"></div>
           <div className="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-0.5">Avg Acc</div>
-          <div className="text-lg font-bold text-slate-800 leading-none">{avgAccuracy > 0 ? avgAccuracy : 100}<span className="text-[10px] font-normal text-slate-400 font-sans">%</span></div>
-          <div className="text-[9px] text-emerald-600 font-medium mt-1 flex items-center gap-0.5">
+          <div className="text-xl font-bold text-slate-800 leading-none">{avgAccuracy > 0 ? avgAccuracy : 100}<span className="text-xs font-normal text-slate-400 font-sans">%</span></div>
+          <div className="text-[9px] text-emerald-600 font-medium mt-1.5 flex items-center gap-0.5">
             <Target className="w-2.5 h-2.5 text-emerald-500" /> Peak target
           </div>
         </div>
 
-        <div id="stat-status-card" className="border border-slate-100 bg-white p-3 rounded-2xl relative overflow-hidden shadow-sm group">
+        <div id="stat-status-card" className="border border-slate-100 bg-white p-3.5 rounded-2xl relative overflow-hidden shadow-sm group">
           <div className="absolute top-0 left-0 w-1 h-3 bg-amber-500 group-hover:h-full transition-all"></div>
           <div className="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-0.5">Typing Rank</div>
-          <div className="text-xs font-bold text-amber-600 truncate leading-tight mt-0.5">{profile.rank}</div>
-          <div className="text-[8px] text-slate-400 mt-1 truncate">
+          <div className="text-xs sm:text-sm font-bold text-amber-600 truncate leading-tight mt-0.5">{profile.rank}</div>
+          <div className="text-[8px] text-slate-400 mt-1.5 truncate">
             Based on {testsCount} runs
           </div>
         </div>
       </div>
 
       {/* Progression & Daily Goal Grid split */}
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4.5">
         {/* SVG speeds Area graph */}
         <div className="border border-slate-100 bg-white p-4.5 rounded-2xl shadow-sm flex flex-col justify-between">
           {renderSpeedChart()}
@@ -330,14 +330,14 @@ export default function DashboardTab({ profile, onSetTab, onStartContinueLesson 
           <span className="text-[10px] font-bold text-indigo-600 block">Locked / Unlocked</span>
         </div>
         
-        <div className="grid grid-cols-1 gap-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
             <div className={`p-2 rounded-lg bg-white border ${profile.bestWpm >= 50 ? 'border-indigo-200 text-indigo-600 shadow-sm' : 'border-slate-200 text-slate-350 bg-slate-100'}`}>
               <Trophy className="w-4 h-4" />
             </div>
             <div>
               <p className="text-xs text-slate-800 font-bold">Mach 50 Speeder</p>
-              <p className="text-[9px] text-slate-400 font-medium">Reach WPM speed of 50 or above.</p>
+              <p className="text-[9px] text-slate-400 font-medium whitespace-pre-wrap">Reach WPM speed of 50 or above.</p>
             </div>
             <div className="ml-auto">
               {profile.bestWpm >= 50 ? (
@@ -349,7 +349,7 @@ export default function DashboardTab({ profile, onSetTab, onStartContinueLesson 
           </div>
 
           <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
-            <div className={`p-2 rounded-lg bg-white border ${profile.streak >= 3 ? 'border-orange-200 text-orange-500 shadow-sm' : 'border-slate-200 text-slate-350 bg-slate-100'}`}>
+            <div className={`p-2 rounded-lg bg-white border ${profile.streak >= 3 ? 'border-orange-200 text-orange-500 shadow-sm' : 'border-slate-205 text-slate-350 bg-slate-100'}`}>
               <Flame className="w-4 h-4" />
             </div>
             <div>

@@ -152,7 +152,7 @@ export default function AnalyticsTab({ profile }: AnalyticsTabProps) {
       </div>
 
       {/* Grid: Rhythm consistency & stats */}
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         
         {/* Performance indexing */}
         <div className="p-4.5 border border-slate-150 bg-white rounded-2xl shadow-sm space-y-3">

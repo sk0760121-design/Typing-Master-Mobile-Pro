@@ -188,7 +188,7 @@ export default function ArenaGamesTab({ profile, onUpdateCoinsAndXp }: ArenaGame
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Space Typing Shooter */}
             <div className="p-5 border border-slate-100 bg-white rounded-2xl text-left flex flex-col justify-between space-y-4 hover:border-indigo-100 transition-all group relative overflow-hidden shadow-sm">
               <div className="absolute top-0 right-0 w-16 h-16 bg-indigo-500/5 rounded-full blur-2xl pointer-events-none"></div>

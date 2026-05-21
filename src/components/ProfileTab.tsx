@@ -83,7 +83,7 @@ export default function ProfileTab({ profile, onChangeAvatar, onClearHistory }: 
       </div>
 
       {/* 2. Numerical Lifetime stats rows */}
-      <div className="grid grid-cols-2 gap-2.5">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5">
         <div className="p-3.5 rounded-xl bg-white border border-slate-100 shadow-sm text-center">
           <span className="block text-[8px] font-bold font-mono text-slate-400 uppercase tracking-wider mb-0.5">Best Speed</span>
           <span className="text-sm font-bold text-indigo-650 font-mono">{profile.bestWpm} WPM</span>
