@@ -2,12 +2,45 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+    
+    <!-- Secondary PWA Headers -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="TypingMaster" />
+    <meta name="theme-color" content="#4f46e5" />
+
+    <!-- SEO Meta Descriptions -->
+    <meta name="description" content="TypeMaster Pro is an installable, mobile-optimized premium platform featuring smart mechanical typing lessons, live paragraph speed tests, analytics, and custom typing mini-games." />
+    <meta name="keywords" content="typing trainer, mobile typing tutor, wpm tracker, custom keyboard lessons, cyberpunk arcade typing game" />
+    <meta name="author" content="Google AI Studio Build Team" />
+
+    <!-- PWA Icons & Manifest Links -->
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="https://img.icons8.com/color/192/keyboard.png" />
+    <link rel="icon" type="image/png" href="https://img.icons8.com/color/48/keyboard.png" />
+
     <title>Typing Master Mobile Pro</title>
   </head>
-  <body>
+  <body class="bg-slate-50 overscroll-y-none select-none overflow-x-hidden">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- PWA Dynamic SW Registration -->
+    <script>
+      if ('serviceWorker' in navigator && window.location.hostname !== 'localhost') {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('[PWA Controller] Service worker registered successfully:', registration.scope);
+            })
+            .catch((error) => {
+              console.warn('[PWA Controller] Service worker activation bypassed/failed:', error);
+            });
+        });
+      }
+    </script>
   </body>
 </html>
 

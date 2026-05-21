@@ -1,0 +1,28 @@
+{
+  "name": "Typing Master Mobile Pro",
+  "short_name": "TypingMaster",
+  "description": "Premium professional typing training application for mobile and tablet devices with interactive lessons, tests, arcade typing games, and analytics.",
+  "start_url": "/",
+  "id": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#090d16",
+  "theme_color": "#6366f1",
+  "dir": "ltr",
+  "lang": "en-US",
+  "categories": ["utilities", "education", "games"],
+  "icons": [
+    {
+      "src": "https://img.icons8.com/color/192/keyboard.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://img.icons8.com/color/512/keyboard.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
